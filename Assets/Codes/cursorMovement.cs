@@ -8,9 +8,11 @@ public class cursorMovement : MonoBehaviour
     Ray ray;
 
     gridElement lastHit;
+    RectTransform rectTransform;
     void Start()
     {
-
+        rectTransform = this.GetComponent<RectTransform>();
+        this.rectTransform.sizeDelta = new Vector2(0,0);
     }
 
     // Update is called once per frame
@@ -21,7 +23,7 @@ public class cursorMovement : MonoBehaviour
         {
             this.transform.position = hit.collider.transform.position;
             lastHit = hit.collider.gameObject.GetComponent<gridElement>();
-
+            this.rectTransform.sizeDelta = new Vector2(1.0f, lastHit.GetElementHeight());
             if (Input.GetMouseButtonDown(1))
             {
                 SetCurserButton(0);
@@ -39,7 +41,7 @@ public class cursorMovement : MonoBehaviour
         {
             case 0:
                 //remove gridElement
-                if (true)
+                if (coord.y > 0)
                 {
                     lastHit.SetDisable();
                 }
