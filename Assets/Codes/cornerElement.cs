@@ -23,11 +23,12 @@ public class cornerElement : MonoBehaviour
 
     public void SetCornerElement()
     {
-        //help to scan nearby and set bitMaskValue.
+        //scan nearby and set bitMaskValue.
         bitMaskValue = bitMask.GetBitMask(nearGridElements);
         mesh.mesh = cornerMeshes.instance.GetCornerMesh(bitMaskValue, coord.y);
     }
 
+    //scan nearby and register surrouding gridElements.
     public void SetNearGridElements()
     {
         int width = constructor.instance.width;

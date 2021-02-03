@@ -1009,10 +1009,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 5
   height: 5
-  gridElement: {fileID: -1311887167974074198, guid: 09bef99d0dc89804f880361c145398d3,
+  gridElementPrefab: {fileID: 5903439315902548304, guid: 09bef99d0dc89804f880361c145398d3,
     type: 3}
-  cornerElement: {fileID: 9036349372543249241, guid: 5444d0a5de3be564da7f2d65e62282fa,
+  cornerElementPrefab: {fileID: 3581732097639974125, guid: 5444d0a5de3be564da7f2d65e62282fa,
     type: 3}
+  cornerElementPrefabs: []
+  gridElementPrefabs: []
   cornerElements: []
   gridElements: []
 --- !u!4 &674686614

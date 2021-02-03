@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Xml.Serialization;
+using System.IO;
 
 public class cursorMovement : MonoBehaviour
 {
@@ -29,6 +31,25 @@ public class cursorMovement : MonoBehaviour
                 SetCurserButton(0);
             }
         }
+
+
+
+        // reset when press 5
+        //read a file, instantiate a constructor by width height. then read an array to enable and disable gridElement.
+        if (Input.GetKeyDown("5"))
+        {
+            constructor.instance.freeMemory();
+            constructor.instance.initialize(10, 2);
+        }
+        //save file
+        if (Input.GetKeyDown("1"))
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(constructorInfo));
+            StreamWriter writer = new StreamWriter("constructorInfo.xml");
+            serializer.Serialize(writer.BaseStream, constructor.instance.info);
+            writer.Close();
+        }
+
     }
 
     public void SetCurserButton(int input)
@@ -43,6 +64,7 @@ public class cursorMovement : MonoBehaviour
                 //remove gridElement
                 if (coord.y > 0)
                 {
+                    //not that setDisable or enable will influence gridElement's cornerElements.
                     lastHit.SetDisable();
                 }
                 break;
@@ -84,3 +106,6 @@ public class cursorMovement : MonoBehaviour
         }
     }
 }
+
+
+

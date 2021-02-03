@@ -28,14 +28,14 @@ public class gridElement : MonoBehaviour
     //array register CE nearby
     public cornerElement[] corners = new cornerElement[8];
 
+   
     public void Initialize(int setX, int setY, int setZ, float setElementHeight)
     {
         int width = constructor.instance.width;
-        int height = constructor.instance.height;
-
+        //record the coordinates
         coord = new coord(setX, setY, setZ);
         this.name = "GE_" + this.coord.x + "_" + this.coord.y + "_" + this.coord.z;
-
+        //scale it
         this.elementHeight = setElementHeight;
         this.transform.localScale = new Vector3(1.0f, elementHeight, 1.0f);
         this.col = this.GetComponent<Collider>();
@@ -53,7 +53,6 @@ public class gridElement : MonoBehaviour
 
         float posY = this.transform.position.y;
         float deltaY = elementHeight / 2;
-        Debug.Log(posY);
         //positioning cornerElements
         corners[0].SetPosition(col.bounds.min.x, posY - deltaY, col.bounds.min.z);
         corners[1].SetPosition(col.bounds.max.x, posY - deltaY, col.bounds.min.z);
@@ -73,11 +72,11 @@ public class gridElement : MonoBehaviour
     //triggerd by mouse
     public void SetEnable()
     {
+        int width = constructor.instance.width;
         this.isEnabled = true;
         this.col.enabled = true;
-        //this.rend.enabled = true;
-        //when mouse set a GE enabled, should influence the corners nearby.
-        foreach(cornerElement ce in corners)
+        constructor.instance.info.gridElementStatus[coord.x + width * (coord.z + width* coord.y)] = 1;
+        foreach (cornerElement ce in corners)
         {
             ce.SetCornerElement();
         }
@@ -85,9 +84,11 @@ public class gridElement : MonoBehaviour
 
     public void SetDisable()
     {
+        int width = constructor.instance.width;
         this.isEnabled = false;
         this.col.enabled = false;
         //this.rend.enabled = false;
+        constructor.instance.info.gridElementStatus[coord.x + width * (coord.z + width * coord.y)] = 0;
         foreach (cornerElement ce in corners)
         {
             ce.SetCornerElement();

@@ -13,7 +13,7 @@ using UnityEngine;
 ///	r/f 			- up/down (world space)
 ///	pageup/pagedown	- up/down (world space)
 ///	hold shift		- enable fast movement mode
-///	right mouse  	- enable free look
+///	hold space  	- enable free look
 ///	mouse			- free look / rotation
 ///     
 /// </summary>
