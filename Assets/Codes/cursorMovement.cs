@@ -7,8 +7,7 @@ using UnityEngine.UI;
 
 public class cursorMovement : MonoBehaviour
 {
-    public Button saveButton;
-    public Button loadButton;
+
     RaycastHit hit;
     Ray ray;
 
@@ -42,14 +41,14 @@ public class cursorMovement : MonoBehaviour
         if (Input.GetKeyDown("5"))
         {
             constructor.instance.freeMemory();
-            constructor.instance.initialize(10, 2);
+            constructor.instance.initialize(constructor.instance.info.width, constructor.instance.info.height);
         }
         //save file
         if (Input.GetKeyDown("1"))
         {
             XMLOp.Serialize(constructor.instance.info, "constructorInfo.xml");
         }
-        if (Input.GetKeyDown("2"))
+        if (Input.GetKeyDown("9"))
         {
             constructorInfo outInfo = new constructorInfo();
             outInfo = XMLOp.Deserialize<constructorInfo>("constructorInfo.xml");
@@ -62,7 +61,6 @@ public class cursorMovement : MonoBehaviour
             {
                 if (outInfo.gridElementStatus[i] == 0)
                 {
-                    Debug.Log(i);
                     constructor.instance.info.gridElementStatus[i] = 0;
                     constructor.instance.gridElements[i].SetDisable();
                 }
