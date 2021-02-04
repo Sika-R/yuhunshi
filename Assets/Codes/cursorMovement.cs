@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Xml.Serialization;
 using System.IO;
+using UnityEngine.UI;
 
 public class cursorMovement : MonoBehaviour
 {
+    public Button saveButton;
+    public Button loadButton;
     RaycastHit hit;
     Ray ray;
 
@@ -44,12 +47,35 @@ public class cursorMovement : MonoBehaviour
         //save file
         if (Input.GetKeyDown("1"))
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(constructorInfo));
-            StreamWriter writer = new StreamWriter("constructorInfo.xml");
-            serializer.Serialize(writer.BaseStream, constructor.instance.info);
-            writer.Close();
+            XMLOp.Serialize(constructor.instance.info, "constructorInfo.xml");
         }
+        if (Input.GetKeyDown("2"))
+        {
+            constructorInfo outInfo = new constructorInfo();
+            outInfo = XMLOp.Deserialize<constructorInfo>("constructorInfo.xml");
+            constructor.instance.info.width = outInfo.width;
+            constructor.instance.info.height = outInfo.height;
 
+            constructor.instance.freeMemory();
+            constructor.instance.initialize(outInfo.width, outInfo.height);
+            for (int i = 0; i < outInfo.width * outInfo.width * outInfo.height; i++)
+            {
+                if (outInfo.gridElementStatus[i] == 0)
+                {
+                    Debug.Log(i);
+                    constructor.instance.info.gridElementStatus[i] = 0;
+                    constructor.instance.gridElements[i].SetDisable();
+                }
+                else
+                {
+                    constructor.instance.info.gridElementStatus[i] = 1;
+                    constructor.instance.gridElements[i].SetEnable();
+
+                }
+            }
+
+
+        }
     }
 
     public void SetCurserButton(int input)
