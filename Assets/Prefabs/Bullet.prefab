@@ -96,9 +96,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BulletLifeTime: 2
   m_BulletSpeed: 15
-  m_NoTriggerTime: 0.1
+  m_NoTriggerTime: 0.05
   m_Canon: {fileID: 0}
-  m_Attack: 0
+  m_Attack: 10
 --- !u!136 &4231130419651926761
 CapsuleCollider:
   m_ObjectHideFlags: 0

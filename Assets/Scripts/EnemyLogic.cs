@@ -77,6 +77,7 @@ public class EnemyLogic : MonoBehaviour
     	if(other.tag == "Bullet")
     	{
     		HitByBullet(other.gameObject.GetComponentInParent<BulletLogic>().m_Attack);
+            other.gameObject.GetComponentInParent<BulletLogic>().Hit();
     	}
 
     	if(other.tag == "Player")

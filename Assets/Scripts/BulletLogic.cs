@@ -50,4 +50,11 @@ public class BulletLogic : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void Hit()
+    {
+        m_Canon.GetComponent<CanonLogic>().m_Duration = m_Canon.GetComponent<CanonLogic>().m_DurationTime;
+
+    }
+
+
 }

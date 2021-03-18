@@ -111,7 +111,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SpinSpeed: 5
-  m_SlotCnt: 5
+  m_SlotCnt: 0
+  m_AngleCnt: 0
   m_CanonPrefab: {fileID: 352526541721199731, guid: 1d46fe5ae3ad8124fa7b6154ba816da7,
     type: 3}
 --- !u!64 &8672737740064163757
