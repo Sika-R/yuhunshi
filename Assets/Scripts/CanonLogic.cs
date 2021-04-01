@@ -9,7 +9,7 @@ public class CanonLogic : MonoBehaviour
 
 	//向n个方向发射炮弹
 	[SerializeField]
-	int m_DirectionCnt;
+	public int m_DirectionCnt;
 
 	List<Vector3> m_SpawnPoints = new List<Vector3>();
 	List<Quaternion> m_SpawnRotations = new List<Quaternion>();
@@ -66,9 +66,9 @@ public class CanonLogic : MonoBehaviour
     GameObject m_Camera;
 
     [SerializeField]
-    float m_MaxHealth;
+    public float m_MaxHealth;
 
-    float m_Health;
+    public float m_Health;
 
 
     public Texture2D blood_red;
@@ -80,6 +80,11 @@ public class CanonLogic : MonoBehaviour
 
     public float m_Duration;
 
+    public bool m_Active = true;
+    public bool m_isDragged = false;
+
+    GameObject m_TurnBaseManager;
+
 
 
 
@@ -88,6 +93,7 @@ public class CanonLogic : MonoBehaviour
     void Start()
     {
         m_Camera = GameObject.Find("Main Camera");
+        m_TurnBaseManager = GameObject.Find("TurnBaseManager");
 
     	m_Frequency = m_InitFrequency;
     	m_Speed = m_InitSpeed;
@@ -121,62 +127,69 @@ public class CanonLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if(m_time <= 0)
+        if(m_Active)
         {
-        	Vector3 initSpawnPoint = transform.position + m_CanonRadius * transform.forward;
-		    
-		    Vector3 pos = initSpawnPoint;
-		    Vector3 nextDirection = transform.forward;
-		    Quaternion nextRotation = transform.rotation;
-		    for(int i = 0; i < m_DirectionCnt; ++i)
-		    {
-		    	GameObject newBullet = Instantiate(m_BulletPrefab, pos, nextRotation) as GameObject;
-	        	BulletLogic newBulletLogic = newBullet.GetComponent<BulletLogic>();
-	        	newBulletLogic.m_Canon = gameObject;
-	        	if(m_NextDoubleAtk > 0)
-	        	{
-					newBulletLogic.m_Attack = m_BulletAtk * 2;
-					m_NextDoubleAtk--;
-	        	}
-	        	if(m_NextDoubleSpeed > 0)
-	        	{
-	        		newBulletLogic.m_BulletSpeed *= 2;
-	        		m_NextDoubleSpeed--;
-	        	}
+            if(m_time <= 0)
+            {
+                Vector3 initSpawnPoint = transform.position + m_CanonRadius * transform.forward;
+                
+                Vector3 pos = initSpawnPoint;
+                Vector3 nextDirection = transform.forward;
+                Quaternion nextRotation = transform.rotation;
+                for(int i = 0; i < m_DirectionCnt; ++i)
+                {
+                    GameObject newBullet = Instantiate(m_BulletPrefab, pos, nextRotation) as GameObject;
+                    BulletLogic newBulletLogic = newBullet.GetComponent<BulletLogic>();
+                    newBulletLogic.m_Canon = gameObject;
+                    if(m_NextDoubleAtk > 0)
+                    {
+                        newBulletLogic.m_Attack = m_BulletAtk * 2;
+                        m_NextDoubleAtk--;
+                    }
+                    if(m_NextDoubleSpeed > 0)
+                    {
+                        newBulletLogic.m_BulletSpeed *= 2;
+                        m_NextDoubleSpeed--;
+                    }
 
 
-		    	Quaternion q = Quaternion.AngleAxis(360 / m_DirectionCnt, transform.up);
-		    	nextDirection = q * nextDirection;
-		    	nextRotation = q * nextRotation;
-		    	pos = transform.position + m_CanonRadius * nextDirection;
-		    }
+                    Quaternion q = Quaternion.AngleAxis(360 / m_DirectionCnt, transform.up);
+                    nextDirection = q * nextDirection;
+                    nextRotation = q * nextRotation;
+                    pos = transform.position + m_CanonRadius * nextDirection;
+                }
 
-	        m_time = m_Frequency;
+                m_time = m_Frequency;
+            }
+
+            if(m_cd == m_bonusTime)
+            {
+                m_Frequency = m_Frequency / 2;
+                m_time -= m_Frequency;
+            }
+            else if(m_cd <= 0)
+            {
+                m_Frequency = m_InitFrequency;
+            }
+
+            m_cd -= Time.deltaTime;
+            m_time -= Time.deltaTime;
+            m_Duration -= Time.deltaTime;
+
+            if(m_Health <= 0)
+            {
+                Destroy(gameObject);
+            }
+            if(m_Duration < 0)
+            {
+                if(m_TurnBaseManager)
+                {
+                    m_TurnBaseManager.GetComponent<TurnBaseManager>().RemoveCanon(gameObject);
+                }
+                Destroy(gameObject);
+            }
         }
-
-        if(m_cd == m_bonusTime)
-        {
-        	m_Frequency = m_Frequency / 2;
-        	m_time -= m_Frequency;
-        }
-        else if(m_cd <= 0)
-        {
-        	m_Frequency = m_InitFrequency;
-        }
-
-        m_cd -= Time.deltaTime;
-        m_time -= Time.deltaTime;
-        m_Duration -= Time.deltaTime;
-
-        if(m_Health < 0)
-        {
-            Destroy(gameObject);
-        }
-        if(m_Duration < 0)
-        {
-            Destroy(gameObject);
-        }
+        
 
     }
 
@@ -222,45 +235,46 @@ public class CanonLogic : MonoBehaviour
 
     void OnGUI()
     {
-
-        Vector3 worldPosition = new Vector3 (transform.position.x , transform.position.y + m_CanonHeight,transform.position.z);
-        //根据NPC头顶的3D坐标换算成它在2D屏幕中的坐标
-        Vector2 position = m_Camera.GetComponent<Camera>().WorldToScreenPoint (worldPosition);
-        //得到真实NPC头顶的2D坐标
-        position = new Vector2 (position.x, Screen.height - position.y);
-        //注解2
-        //计算出血条的宽高
-        //Vector2 bloodSize = GUI.skin.label.CalcSize (new GUIContent(blood_red));
-        Vector2 bloodSize = new Vector2(30, 5);
- 
-        //通过血值计算红色血条显示区域
-        float blood_width = 30 * m_Health / m_MaxHealth;
-        //先绘制黑色血条
-        GUI.DrawTexture(new Rect(position.x - (bloodSize.x / 2),position.y - bloodSize.y ,bloodSize.x,bloodSize.y),blood_black);
-        //在绘制红色血条
-        GUI.DrawTexture(new Rect(position.x - (bloodSize.x / 2),position.y - bloodSize.y ,blood_width,bloodSize.y),blood_red);
-        //HP数值
-        string name = "HP: " + m_Health;
-        if(m_InstantSpawn)
+        if(!m_isDragged)
         {
-            name = name + " 立即发射";
+            Vector3 worldPosition = new Vector3 (transform.position.x , transform.position.y + m_CanonHeight,transform.position.z);
+            //根据NPC头顶的3D坐标换算成它在2D屏幕中的坐标
+            Vector2 position = m_Camera.GetComponent<Camera>().WorldToScreenPoint (worldPosition);
+            //得到真实NPC头顶的2D坐标
+            position = new Vector2 (position.x, Screen.height - position.y);
+            //注解2
+            //计算出血条的宽高
+            //Vector2 bloodSize = GUI.skin.label.CalcSize (new GUIContent(blood_red));
+            Vector2 bloodSize = new Vector2(30, 5);
+     
+            //通过血值计算红色血条显示区域
+            float blood_width = 30 * m_Health / m_MaxHealth;
+            //先绘制黑色血条
+            GUI.DrawTexture(new Rect(position.x - (bloodSize.x / 2),position.y - bloodSize.y ,bloodSize.x,bloodSize.y),blood_black);
+            //在绘制红色血条
+            GUI.DrawTexture(new Rect(position.x - (bloodSize.x / 2),position.y - bloodSize.y ,blood_width,bloodSize.y),blood_red);
+            //HP数值
+            string name = "HP: " + m_Health;
+            if(m_InstantSpawn)
+            {
+                name = name + " 立即发射";
+            }
+            if(m_DoubleAtk)
+            {
+                name = name + " 加攻";
+            }
+            if(m_DoubleSpeed)
+            {
+                name = name + " 加速";
+            }
+            if(m_DoubleFrequency)
+            {
+                name = name + " 加频率";
+            }
+            GUI.color  = Color.white;
+            Vector2 nameSize = GUI.skin.label.CalcSize (new GUIContent(name));
+            GUI.Label(new Rect(position.x - (nameSize.x / 2),position.y - nameSize.y - bloodSize.y ,nameSize.x,nameSize.y), name);
         }
-        if(m_DoubleAtk)
-        {
-            name = name + " 加攻";
-        }
-        if(m_DoubleSpeed)
-        {
-            name = name + " 加速";
-        }
-        if(m_DoubleFrequency)
-        {
-            name = name + " 加频率";
-        }
-        GUI.color  = Color.white;
-        Vector2 nameSize = GUI.skin.label.CalcSize (new GUIContent(name));
-        GUI.Label(new Rect(position.x - (nameSize.x / 2),position.y - nameSize.y - bloodSize.y ,nameSize.x,nameSize.y), name);
-        
     }
 
 

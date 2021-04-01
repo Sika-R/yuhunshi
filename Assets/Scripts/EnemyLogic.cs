@@ -18,17 +18,19 @@ public class EnemyLogic : MonoBehaviour
    	public Texture2D blood_red;
 	public Texture2D blood_black;
 
-    Transform m_Destination;
+    public Transform m_Destination;
 
     UnityEngine.AI.NavMeshAgent m_NavMeshAgent;
     float m_EnemyHeight;
     GameObject m_Camera;
+    GameObject m_TurnBaseManager;
 
     // Start is called before the first frame update
     void Start()
     {
     	m_Destination = GameObject.Find("Center").transform;
     	m_Camera = GameObject.Find("Main Camera");
+        m_TurnBaseManager = GameObject.Find("TurnBaseManager");
         m_NavMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         m_NavMeshAgent.SetDestination(m_Destination.position);
         m_NavMeshAgent.speed = m_Speed;   
@@ -82,12 +84,24 @@ public class EnemyLogic : MonoBehaviour
 
     	if(other.tag == "Player")
     	{
-    		other.gameObject.GetComponentInParent<PlayerLogic>().PlayerHurt(m_Attack);
+            if(other.gameObject.GetComponent<PlayerLogic>())
+            {
+                other.gameObject.GetComponent<PlayerLogic>().PlayerHurt(m_Attack);
+            }
+            else
+            {
+                other.gameObject.GetComponentInParent<PlayerLogic>().PlayerHurt(m_Attack);
+            }
+    		
     		m_Health = 0;
     	}
 
     	if(m_Health <= 0)
     	{
+            if(m_TurnBaseManager)
+            {
+                m_TurnBaseManager.GetComponent<TurnBaseManager>().RemoveEnemy(gameObject);
+            }
     		Destroy(gameObject);
     	}
     }

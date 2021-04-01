@@ -12,7 +12,7 @@ public class BulletLogic : MonoBehaviour
     public float m_BulletSpeed = 15.0f;
 
     [SerializeField]
-    float m_NoTriggerTime = 0.1f;
+    float m_NoTriggerTime = 0.05f;
     float m_time = 0;
 
     public GameObject m_Canon;

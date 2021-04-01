@@ -14,7 +14,14 @@ public class PlayerLogic : MonoBehaviour
     {
         m_Health = m_HealthMax;
         GameObject GameManager = GameObject.Find("GameManager");
-        m_UIManager = GameManager.GetComponent<UIManager>();
+        if(GameManager)
+        {
+            m_UIManager = GameManager.GetComponent<UIManager>();
+        }
+        else
+        {
+            m_UIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        }
         m_UIManager.SetHP(m_Health);
     }
 
