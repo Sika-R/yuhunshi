@@ -32,7 +32,10 @@ public class EnemyLogic : MonoBehaviour
     	m_Camera = GameObject.Find("Main Camera");
         m_TurnBaseManager = GameObject.Find("TurnBaseManager");
         m_NavMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        
+
         m_NavMeshAgent.SetDestination(m_Destination.position);
+        
         m_NavMeshAgent.speed = m_Speed;   
         float size_y = GetComponent<Collider>().bounds.size.y;
 		float scal_y = transform.localScale.y;

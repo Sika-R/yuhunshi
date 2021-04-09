@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class InitSetup : EditorWindow
+public class DiscInitSetup : EditorWindow
 {
 	string m_numObjects;
 
@@ -15,10 +15,10 @@ public class InitSetup : EditorWindow
 	bool m_radiusCheck = true;
 
 
-	[MenuItem("GenerateDisc/Generate")]
+	[MenuItem("Generate/GenerateDisc")]
     static void SpawnObjectsWindowInit()
     {
-        EditorWindow window = GetWindow(typeof(InitSetup));
+        EditorWindow window = GetWindow(typeof(DiscInitSetup));
         window.Show();
     }
 

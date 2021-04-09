@@ -61,18 +61,21 @@ public class TurnBaseManager : MonoBehaviour
 	List<GameObject> m_Enemy = new List<GameObject>();
 	//敌人出生的位置
 	[SerializeField]
-	float m_GenerateEnemyRadius = 360.0f;
+	float m_GenerateEnemyRadius = 500.0f;
 
 	float m_ScreenWidth;
 	float m_ScreenHeight;
 
 	Vector3 m_NewEnemyPos;
 
+	int m_RoundCnt;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
+    	m_RoundCnt = 0;
     	m_ModelDrag = GetComponent<ModelDrag>();
     	m_ModelDrag.enabled = false;
     	m_State = BattleState.Start;
@@ -99,7 +102,7 @@ public class TurnBaseManager : MonoBehaviour
     	}
 
 
-    	for(int i = 0; i < 5; i++)
+    	for(int i = 0; i < SpawnEnemyCnt(); i++)
     	{
     		SpawnNewEnemy();
     		yield return new WaitForSeconds(0.3f);
@@ -219,5 +222,11 @@ public class TurnBaseManager : MonoBehaviour
     public void RemoveCanon(GameObject canon)
     {
         m_Canon.RemoveAt(m_Canon.IndexOf(canon));
+    }
+
+    int SpawnEnemyCnt()
+    {
+    	//m_RoundCnt related
+    	return 5;
     }
 }
