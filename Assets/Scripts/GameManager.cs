@@ -43,7 +43,12 @@ public class GameManager : MonoBehaviour
     	m_UIManager.SetTimeText(m_Time);
         if(m_EnemySpawnCd <= 0)
         {
-        	SpawnNewEnemy();
+	int i = 0; 
+	//根据游戏时常增加生成的敌人数量，每30秒增加1个
+	for (; i<1+ (int)m_Time/30; i++)
+	{
+		SpawnNewEnemy();
+	}
         	m_EnemySpawnCd = EnemySpawnFrequencyCalculation();
         }
         m_EnemySpawnCd -= Time.deltaTime;
@@ -67,7 +72,13 @@ public class GameManager : MonoBehaviour
     //敌人生成频率计算函数
     float EnemySpawnFrequencyCalculation()
     {
-        //现在是十秒一生成，m_Time是时间变量
-    	return 10.0f;
+        //初始是十秒一生成，m_Time是时间变量
+        //修改为根据游戏开始时间逐渐递增，每过30秒-1，最低为5s
+    	float result=10.0f - (int)m_Time/30;
+	if(result < 5.0f)
+	{
+		result = 5.0f; 
+	}
+	return result;
     }
 }

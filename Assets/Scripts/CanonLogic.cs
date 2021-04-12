@@ -35,6 +35,10 @@ public class CanonLogic : MonoBehaviour
 	float m_InitBulletAtk;
 	float m_BulletAtk;
 
+	//子弹持续时间，added by Chris
+	[SerializeField]
+	float m_BulletDuration; 
+
 	//炮台的半径
 	float m_CanonRadius;
     float m_CanonHeight;
@@ -140,7 +144,9 @@ public class CanonLogic : MonoBehaviour
                 {
                     GameObject newBullet = Instantiate(m_BulletPrefab, pos, nextRotation) as GameObject;
                     BulletLogic newBulletLogic = newBullet.GetComponent<BulletLogic>();
-                    newBulletLogic.m_Canon = gameObject;
+                    newBulletLogic.m_Canon = gameObject; 
+	    newBulletLogic.m_BulletLifeTime = m_BulletDuration; //added by Chris
+	    newBulletLogic.m_Attack = m_BulletAtk; //added by Chris
                     if(m_NextDoubleAtk > 0)
                     {
                         newBulletLogic.m_Attack = m_BulletAtk * 2;
