@@ -27,7 +27,7 @@ public enum BattleState
 
 public class TurnBaseManager : MonoBehaviour
 {
-	BattleState m_State;
+	//BattleState m_State;
 	//卡的prefab
 	[SerializeField]
 	GameObject m_CardPrefab;
@@ -68,17 +68,17 @@ public class TurnBaseManager : MonoBehaviour
 
 	Vector3 m_NewEnemyPos;
 
-	int m_RoundCnt;
+	//int m_RoundCnt;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-    	m_RoundCnt = 0;
+    	//m_RoundCnt = 0;
     	m_ModelDrag = GetComponent<ModelDrag>();
     	m_ModelDrag.enabled = false;
-    	m_State = BattleState.Start;
+    	//m_State = BattleState.Start;
     	m_Canvas = GameObject.Find("Canvas").gameObject;
     	m_FinishedButton = m_Canvas.transform.Find("FinishedButton").gameObject;
     	m_FinishedButton.SetActive(false);
@@ -118,7 +118,7 @@ public class TurnBaseManager : MonoBehaviour
         }
 
         yield return 0;
-        m_State = BattleState.PlayerTurn;
+        //m_State = BattleState.PlayerTurn;
         StartCoroutine(PlayerTurn());
     }
 
