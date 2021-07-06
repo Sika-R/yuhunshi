@@ -8,6 +8,8 @@ TagManager:
   - Bullet
   - Floor
   - Cube
+  - Enemy
+  - Operator
   layers:
   - Default
   - TransparentFX
@@ -18,8 +20,8 @@ TagManager:
   - 
   - 
   - Glow
-  - 
-  - 
+  - Enemy
+  - Operator
   - 
   - 
   - 

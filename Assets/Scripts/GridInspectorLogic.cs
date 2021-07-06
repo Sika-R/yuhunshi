@@ -19,7 +19,8 @@ public class GridInspectorLogic : Editor
         Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
         RaycastHit hitInfo;
         bool isDown = false;
-        if (Physics.Raycast(ray, out hitInfo, 2000)) //这里设置层
+        LayerMask mask = 1 << 9 | 1 << 10;
+        if (Physics.Raycast(ray, out hitInfo, 2000, ~mask)) //这里设置层
         {
         	if(hitInfo.collider.tag == "Floor")
         	{
@@ -37,7 +38,9 @@ public class GridInspectorLogic : Editor
 	                	if(initPoint.x >= 0)
 	                	{
 							GameObject newobj = Instantiate(prefab, initPoint, Quaternion.Euler(0, 0, 0), ((DrawGrid)target).transform) as GameObject;  //设置障碍 
-	                		newobj.transform.localScale = new Vector3(((DrawGrid)target).m_gridSize, ((DrawGrid)target).m_gridSize,((DrawGrid)target).m_gridSize);
+							Debug.Log(newobj.transform.localScale);
+	                		//newobj.transform.localScale = new Vector3(((DrawGrid)target).m_gridSize, ((DrawGrid)target).m_gridSize,((DrawGrid)target).m_gridSize);
+	                		newobj.transform.localScale = ((DrawGrid)target).m_gridSize * newobj.transform.localScale;
 	                		Undo.RegisterCreatedObjectUndo(newobj, "NewObject");
 	                	}
 						
@@ -65,7 +68,7 @@ public class GridInspectorLogic : Editor
 	                	Vector3 initPoint = bottom.position;
 	                	initPoint.y += drawgrid.m_gridSize;
 	                	GameObject newobj = Instantiate(prefab, initPoint, Quaternion.Euler(0, 0, 0), ((DrawGrid)target).transform) as GameObject;  //设置障碍 
-                		newobj.transform.localScale = new Vector3(drawgrid.m_gridSize, drawgrid.m_gridSize,drawgrid.m_gridSize);
+                		newobj.transform.localScale = newobj.transform.localScale = ((DrawGrid)target).m_gridSize * newobj.transform.localScale;
                 		Undo.RegisterCreatedObjectUndo(newobj, "NewObject");
 	                }
 	            }
