@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_atk: 1
-  m_freq: 2
+  m_freq: 1
   m_shootRange: 1
   m_splashRange: 2
   m_enemy: []
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_maxHealth: 10
   blood_red: {fileID: 2800000, guid: 4df2972fe8008e64db6c877a0930a27c, type: 3}
   blood_black: {fileID: 2800000, guid: f1a952339019d47439c2b005f2680fc5, type: 3}
-  m_isBlock: 0
+  m_isBlock: 1
   m_bullet: {fileID: 8258170728636877855, guid: 41dc62269114f2f40a267c6fc5e9c6a2,
     type: 3}
 --- !u!65 &2017673041378919987

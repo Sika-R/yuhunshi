@@ -16,7 +16,7 @@ public class CanonLogic : MonoBehaviour
 
 	//生成子弹的频率
 	[SerializeField]
-	float m_InitFrequency;
+	public float m_InitFrequency;
 	float m_Frequency;
 
 	

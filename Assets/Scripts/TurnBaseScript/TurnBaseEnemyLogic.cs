@@ -97,7 +97,7 @@ public class TurnBaseEnemyLogic : MonoBehaviour
         {
             m_currentEnemy = m_operator[0];
             m_t = m_freq;
-            if(m_splashRange == 0)
+            if(m_splashRange != 0)
             {
                 SplashAtk(gameObject, m_atk, m_shootRange);
             }

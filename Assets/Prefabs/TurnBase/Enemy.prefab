@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 6947934855612446664}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.89, y: 0.39, z: 6.52}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.5, y: 0.8, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -93,7 +93,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.1
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_atk: 2
   m_freq: 1
-  m_shootRange: 0
+  m_shootRange: 1
   m_ignoreWall: 0
   m_splashRange: 0
   m_operator: []
